@@ -12,7 +12,7 @@ CREATE TABLE nurse (
 	name VARCHAR (255) NOT NULL
 );
 CREATE TABLE patient (
-	id integer PRIMARY KEY NOT NULL,
+	id serial PRIMARY KEY NOT NULL,
 	name VARCHAR (255) NOT NULL,
 	symptom VARCHAR (255) NOt NULL
 );
@@ -21,6 +21,3 @@ CREATE TABLE room (
 	beds_total integer NOT NULL,
 	beds_available integer NOT NULL
 );
-
-
-create sequence patient_seq increment 1 start 1;

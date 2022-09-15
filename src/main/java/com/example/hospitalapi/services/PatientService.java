@@ -35,7 +35,12 @@ public class PatientService implements IPatientService{
     }
 
     @Override
-    public Patient updatePatient(Patient updatedPatient) throws NotFoundException {
-        return patientRepository.updatePatient(updatedPatient);
+    public Patient updatePatient(Integer id, String name, String symptom) throws NotFoundException {
+        return patientRepository.updatePatient(id, name, symptom);
+    }
+
+    @Override
+    public void deletePatient(Integer id) throws NotFoundException {
+         patientRepository.deletePatient(id);
     }
 }

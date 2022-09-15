@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
@@ -28,6 +29,9 @@ public class PatientRepository implements IPatientRepository{
     private static final String SQL_GET_ALL_PATIENTS = "SELECT id, name, symptom FROM patient";
 
     private static final String SQL_UPDATE_PATIENT = "UPDATE patient SET name = ?, symptom = ? WHERE id = ?";
+
+    private static final String SQL_DELETE_PATIENT = "DELETE FROM patient WHERE id = ?";
+
     @Autowired
     JdbcTemplate jdbcTemplate;
 
@@ -62,8 +66,40 @@ public class PatientRepository implements IPatientRepository{
     }
 
     @Override
-    public Patient updatePatient(Patient updatedPatient) throws NotFoundException {
-        return null;
+    public Patient updatePatient(Integer id, String name, String symptom) throws NotFoundException {
+        try {
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(SQL_UPDATE_PATIENT, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, name);
+                ps.setString(2, symptom);
+                ps.setInt(3,id);
+                return ps;
+
+            }, keyHolder);
+
+            return findById((Integer) keyHolder.getKeys().get("id"));
+
+        }catch (Exception e){
+
+            throw new NotFoundException("Patient not found in database with this id");
+        }
+    }
+
+    @Override
+    public void deletePatient(Integer id) throws NotFoundException {
+        try{
+
+
+            jdbcTemplate.update(connection ->{
+                PreparedStatement ps = connection.prepareStatement(SQL_DELETE_PATIENT, Statement.NO_GENERATED_KEYS);
+                ps.setInt(1, id);
+                return ps;
+            });
+            //TODO
+        }catch(Exception e){
+            throw new NotFoundException("Patient with this id could not be found");
+        }
     }
 
 

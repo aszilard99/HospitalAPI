@@ -15,5 +15,7 @@ public interface IPatientService {
 
     List<Patient> getPatients();
 
-    Patient updatePatient(Patient updatedPatient) throws NotFoundException;
+    Patient updatePatient(Integer id, String name, String symptom) throws NotFoundException;
+
+    void deletePatient(Integer id) throws NotFoundException;
 }
