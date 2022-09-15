@@ -37,14 +37,26 @@ public class PatientController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Patient> updatePatient(@RequestBody final Patient updatedPatient){
-        Patient patient = patientService.updatePatient(updatedPatient);
+    public ResponseEntity<Patient> updatePatient(@RequestBody Map<String, Object> updatedPatientMap, @PathVariable Integer id){
+        String name = (String) updatedPatientMap.get("name");
+        String symptom = (String) updatedPatientMap.get("symptom");
+
+        Patient patient = patientService.updatePatient(id, name, symptom);
         if (patient == null){
             throw new ServerException("patient not found");
         }
         else {
             return new ResponseEntity<>(patient, HttpStatus.OK);
         }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Map<String,String>> deletePatient(@PathVariable Integer id){
+
+        patientService.deletePatient(id);
+        Map<String,String> map = new HashMap<>();
+        map.put("message", "deleted patient successfully");
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
 
