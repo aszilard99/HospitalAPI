@@ -96,7 +96,7 @@ public class PatientRepository implements IPatientRepository{
                 ps.setInt(1, id);
                 return ps;
             });
-            //TODO
+            //TODO on bad patient_id it returns that delete is successfull, so it doesnt throw the exception below
         }catch(Exception e){
             throw new NotFoundException("Patient with this id could not be found");
         }
