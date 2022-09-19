@@ -1,0 +1,8 @@
+{
+  "name": "heroku-springboot-docker-hospital-api",
+  "buildpacks": [
+    {
+      "url": "heroku/maven"
+    }
+  ]
+}
